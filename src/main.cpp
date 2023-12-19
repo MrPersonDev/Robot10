@@ -1,20 +1,24 @@
 #include "main.h"
 
+using namespace okapi;
+
+const int forward = 127;
+const int reverse = -127;
+const int stop = 0;
+
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
-pros::Motor leftTop(9, false), leftBottom(17, true);
-pros::Motor rightTop(2, true), rightBottom(13, true);
-pros::Motor slapperLeft(20, false), slapperRight(11, true);
-pros::ADIDigitalOut leftWing('A'), rightWing('B');
+pros::Motor leftTop(9, true), leftBottom(8, false);
+pros::Motor rightTop(20, false), rightBottom(19, true);
+pros::Motor slapperLeft(7, false), slapperRight(10, true);
+pros::ADIDigitalOut wings('A');
 pros::ADIPotentiometer potentiometer('C');
 
 void wing_release() {
-	leftWing.set_value(1);
-	rightWing.set_value(1);
+	wings.set_value(1);
 }
 
 void wing_retract() {
-	leftWing.set_value(0);
-	rightWing.set_value(0);
+	wings.set_value(0);
 }
 
 void initialize() {
@@ -48,11 +52,11 @@ void opcontrol() {
 		}
         
         if (potentiometer.get_angle() > 130.0 || controller.get_digital(DIGITAL_L2)) {
-			slapperLeft.move(127);
-			slapperRight.move(127);
+			slapperLeft.move(forward);
+			slapperRight.move(forward);
         } else {
-			slapperLeft.move(127);
-			slapperRight.move(127);
+			slapperLeft.move(stop);
+			slapperRight.move(stop);
         }
     }
 }
