@@ -27,9 +27,9 @@ lemlib::Drivetrain drivetrain(&leftMotors, // left motor group
 );
 
 // lateral motion controller
-lemlib::ControllerSettings linearController(4, // proportional gain (kP)
-                                            0, // integral gain (kI)
-                                            3, // derivative gain (kD)
+lemlib::ControllerSettings linearController(5, // proportional gain (kP)
+                                            0.0, // integral gain (kI)
+                                            5, // derivative gain (kD)
                                             3, // anti windup
                                             1, // small error range, in inches
                                             100, // small error range timeout, in milliseconds
@@ -39,9 +39,9 @@ lemlib::ControllerSettings linearController(4, // proportional gain (kP)
 );
 
 // angular motion controller
-lemlib::ControllerSettings angularController(1, // proportional gain (kP)
-                                             0, // integral gain (kI)
-                                             10, // derivative gain (kD)
+lemlib::ControllerSettings angularController(4, // proportional gain (kP)
+                                             0.01, // integral gain (kI)
+                                             20, // derivative gain (kD)
                                              3, // anti windup
                                              1, // small error range, in degrees
                                              100, // small error range timeout, in milliseconds
@@ -50,14 +50,21 @@ lemlib::ControllerSettings angularController(1, // proportional gain (kP)
                                              0 // maximum acceleration (slew)
 );
 
+pros::Rotation leftEncoder(LEFT_ENCODER_PORT, true);
+pros::Rotation rightEncoder(RIGHT_ENCODER_PORT, true);
+lemlib::TrackingWheel leftTrackingWheel(&leftEncoder, lemlib::Omniwheel::NEW_275, -2.0);
+lemlib::TrackingWheel rightTrackingWheel(&rightEncoder, lemlib::Omniwheel::NEW_275, 2.0);
+
 // sensors for odometry
 // note that in this example we use internal motor encoders (IMEs), so we don't pass vertical tracking wheels
-lemlib::OdomSensors sensors(nullptr, // vertical tracking wheel 1, set to null
-                            nullptr, // vertical tracking wheel 2, set to nullptr as we are using IMEs
+lemlib::OdomSensors sensors(&leftTrackingWheel, // vertical tracking wheel 1
+                            // &rightTrackingWheel, // vertical tracking wheel 2
+        nullptr,
                             nullptr, // horizontal tracking wheel 1
                             nullptr, // horizontal tracking wheel 2, set to nullptr as we don't have a second one
                             &imu // inertial sensor
 );
+
 
 // create the chassis
 lemlib::Chassis chassis(drivetrain, linearController, angularController, sensors);

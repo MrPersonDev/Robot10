@@ -2,9 +2,8 @@
 #define ROBOT10_PORT_CONFIG
 
 // encoder ports
-#define LEFT_ENCODER_PORT 1
-#define RIGHT_ENCODER_PORT 2
-#define BACK_ENCODER_PORT 3
+#define LEFT_ENCODER_PORT 16
+#define RIGHT_ENCODER_PORT 17
 
 // inertial ports
 #define INERTIAL_PORT 13
@@ -22,7 +21,8 @@
 #define SLAPPER_RIGHT_PORT 7
 
 // wing ports
-#define WING_PORT 'A'
+#define WING_LEFT_PORT 'H'
+#define WING_RIGHT_PORT 'A'
 
 // potentiometer ports
 #define POTENTIOMETER_PORT 'B'
